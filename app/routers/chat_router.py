@@ -4,6 +4,9 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.schemas.chat_schema import ChatRequest, ChatResponse
 from app.services.chat_service import ask_llm
+from typing import List
+from app.schemas.chat_schema import ChatHistoryResponse
+from app.services.chat_service import get_history
 
 router = APIRouter()
 
@@ -23,3 +26,10 @@ def chat(
         answer=answer,
         model="qwen2.5:3b"
     )
+
+
+@router.get("/history", response_model=List[ChatHistoryResponse])
+def history(
+    db: Session = Depends(get_db)
+):
+    return get_history(db)

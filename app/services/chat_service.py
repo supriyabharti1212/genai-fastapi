@@ -5,7 +5,7 @@ from app.llm.ollama_client import llm
 from app.prompts.prompt_template import chat_prompt
 from app.utils.logger import logger
 from app.core.exceptions import LLMException
-
+from app.db.crud import get_chat_history
 
 def ask_llm(db: Session, question: str):
     logger.info(f"User Question: {question}")
@@ -35,3 +35,8 @@ def ask_llm(db: Session, question: str):
     except Exception as e:
         logger.error(str(e))
         raise LLMException()
+
+
+
+def get_history(db: Session):
+    return get_chat_history(db)
