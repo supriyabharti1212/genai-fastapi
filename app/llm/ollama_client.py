@@ -1,7 +1,8 @@
 from langchain_ollama import ChatOllama
 
+from app.core.config import settings
+
 llm = ChatOllama(
-    model="qwen2.5:3b"
+    model=settings.OLLAMA_MODEL,
+    base_url=settings.OLLAMA_BASE_URL,
 )
-
-
