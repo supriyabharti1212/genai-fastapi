@@ -11,13 +11,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t genai-fastapi .'
+                sh '/usr/local/bin/docker build -t genai-fastapi .'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'docker run --rm genai-fastapi python -m pytest'
+                sh '/usr/local/bin/docker run --rm genai-fastapi python -m pytest'
             }
         }
     }
