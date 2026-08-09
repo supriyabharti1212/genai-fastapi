@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.db.crud import save_chat
 from app.llm.ollama_client import llm
-from app.prompts.prompt_template import chat_prompt
+# from app.prompts.prompt_template import chat_prompt
 from app.utils.logger import logger
 from app.core.exceptions import LLMException
 from app.db.crud import get_chat_history
@@ -26,15 +26,23 @@ def ask_llm(db: Session, question: str):
         )
 
         prompt = f"""
-Answer the user's question using the context below.
+You are a question-answering assistant.
+
+Use ONLY the information provided in the context below to answer the question.
+
+Rules:
+- Do not use outside knowledge.
+- Do not make up facts.
+- Do not add Python code or unrelated examples.
+- If the answer is not present in the context, say:
+  "I don't have enough information in the provided context."
+- Keep the answer concise and directly related to the question.
 
 Context:
 {context}
 
 Question:
 {question}
-
-If the context does not contain enough information, say that you don't have enough information.
 
 Answer:
 """
