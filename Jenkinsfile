@@ -26,9 +26,9 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sh '/usr/local/bin/docker rm -f genai-fastapi-container || true'
-                sh '/usr/local/bin/docker run -d --name genai-fastapi-container -p 8000:8000 genai-fastapi:latest'
+        steps {
+            sh '/usr/local/bin/docker rm -f genai-fastapi-container || true'
+            sh '/usr/local/bin/docker compose up -d --build'
             }
         }
 
