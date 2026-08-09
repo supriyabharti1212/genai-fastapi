@@ -24,5 +24,13 @@ pipeline {
                 sh '/usr/local/bin/docker run --rm genai-fastapi python -m pytest'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                sh '/usr/local/bin/docker rm -f genai-fastapi-container || true'
+                sh '/usr/local/bin/docker run -d --name genai-fastapi-container -p 8000:8000 genai-fastapi:latest'
+            }
+        }
+
     }
 }
