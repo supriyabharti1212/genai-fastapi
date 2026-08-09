@@ -1,5 +1,3 @@
-
-
 from app.rag.vector_store import get_vector_store
 
 
@@ -16,11 +14,32 @@ def ingest_documents():
         """
     ]
 
+    ids = [
+        "krishna-info",
+        "bhagavad-gita-info",
+    ]
+
     vector_store = get_vector_store()
 
-    vector_store.add_texts(documents)
+    existing = vector_store.get(ids=ids)
+    existing_ids = set(existing.get("ids", []))
 
-    print("Documents successfully added to ChromaDB.")
+    new_documents = []
+    new_ids = []
+
+    for document, doc_id in zip(documents, ids):
+        if doc_id not in existing_ids:
+            new_documents.append(document)
+            new_ids.append(doc_id)
+
+    if new_documents:
+        vector_store.add_texts(
+            texts=new_documents,
+            ids=new_ids,
+        )
+        print(f"Added {len(new_documents)} new documents to ChromaDB.")
+    else:
+        print("All documents already exist in ChromaDB.")
 
 
 if __name__ == "__main__":
