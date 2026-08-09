@@ -1,4 +1,3 @@
-
 services:
   db:
     image: postgres:17
@@ -7,12 +6,12 @@ services:
       POSTGRES_PASSWORD: 123456
       POSTGRES_DB: genai_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   api:
-    build: .  
+    build: .
     env_file:
       - .env
     ports:
