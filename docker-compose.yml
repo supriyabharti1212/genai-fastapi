@@ -2,7 +2,7 @@
 services:
   db:
     image: postgres:17
-    container_name: genai-postgres
+    # container_name: genai-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123456
