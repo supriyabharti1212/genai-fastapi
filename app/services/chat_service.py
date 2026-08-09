@@ -63,7 +63,7 @@ Answer:
         return answer
 
     except Exception as e:
-        logger.error(str(e))
+        logger.exception("RAG/LLM error")
         raise LLMException()
 
 
