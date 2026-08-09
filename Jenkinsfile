@@ -26,9 +26,10 @@ pipeline {
         }
 
         stage('Deploy') {
-        steps {
-            sh '/usr/local/bin/docker rm -f genai-fastapi-container || true'
-            sh '/usr/local/bin/docker compose up -d --build'
+            steps {
+                sh 'cp /Users/supriya/Documents/genai-fastapi/.env .env'
+                sh '/usr/local/bin/docker rm -f genai-fastapi-container || true'
+                sh '/usr/local/bin/docker compose up -d --build'
             }
         }
 
