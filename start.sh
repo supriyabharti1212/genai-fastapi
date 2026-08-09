@@ -13,6 +13,9 @@ echo "PostgreSQL is ready!"
 echo "Running database migrations..."
 alembic upgrade head
 
+echo "Ingesting documents into ChromaDB..."
+python -m app.rag.ingest
+
 echo "Starting FastAPI..."
 
 exec uvicorn app.main:app --host 0.0.0.0 --port 8000
