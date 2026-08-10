@@ -26,13 +26,22 @@ def ask_llm(db: Session, question: str, thread_id: str):
             }
         )
 
-        answer = result["messages"][-1].content
+        answer_content = result["messages"][-1].content
+
+        if isinstance(answer_content, list):
+            answer = "".join(
+                item.get("text", "")
+                for item in answer_content
+                if isinstance(item, dict)
+            )
+        else:
+            answer = str(answer_content)
 
         save_chat(
             db=db,
             question=question,
             answer=answer,
-            model="qwen2.5:3b"
+            model="gemini-3.5-flash-lite"
         )
 
         logger.info("Chat saved successfully.")

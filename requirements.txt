@@ -13,3 +13,5 @@ pytest
 chromadb
 langchain-chroma
 langgraph-checkpoint-postgres
+langchain-google-genai
+google-generativeai

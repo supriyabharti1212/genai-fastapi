@@ -24,7 +24,7 @@ def chat(
     return ChatResponse(
         question=request.question,
         answer=answer,
-        model="qwen2.5:3b"
+        model="gemini-3.5-flash-lite"
     )
 
 
