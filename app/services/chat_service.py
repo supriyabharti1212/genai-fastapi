@@ -9,7 +9,7 @@ from app.utils.logger import logger
 from app.core.exceptions import LLMException
 
 
-def ask_llm(db: Session, question: str):
+def ask_llm(db: Session, question: str, thread_id: str):
     logger.info(f"User Question: {question}")
 
     try:
@@ -18,6 +18,11 @@ def ask_llm(db: Session, question: str):
                 "messages": [
                     HumanMessage(content=question)
                 ]
+            },
+            config={
+                "configurable": {
+                    "thread_id": thread_id
+                }
             }
         )
 

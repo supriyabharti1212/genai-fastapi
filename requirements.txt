@@ -12,3 +12,4 @@ alembic
 pytest
 chromadb
 langchain-chroma
+langgraph-checkpoint-postgres

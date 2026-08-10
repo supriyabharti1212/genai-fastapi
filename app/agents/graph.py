@@ -4,7 +4,9 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from app.agents.state import AgentState
 from app.agents.tools import search_documents
 from app.llm.ollama_client import llm
-from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.checkpoint.postgres import PostgresSaver
+import psycopg
+from app.core.config import settings
 
 tools = [search_documents]
 
@@ -33,7 +35,14 @@ builder.add_conditional_edges(
 
 builder.add_edge("tools", "agent")
 
-checkpointer = InMemorySaver()
+conn = psycopg.connect(
+    settings.DATABASE_URL,
+    autocommit=True,
+)
+
+checkpointer = PostgresSaver(conn)
+
+checkpointer.setup()
 
 agent_graph = builder.compile(
     checkpointer=checkpointer

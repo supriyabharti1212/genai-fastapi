@@ -15,7 +15,8 @@ services:
     env_file:
       - .env
     environment:
-      OLLAMA_BASE_URL: "http://host.docker.internal:11434"
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+      DATABASE_URL: postgresql://postgres:123456@db:5432/genai_db
     ports:
       - "8000:8000"
     depends_on:

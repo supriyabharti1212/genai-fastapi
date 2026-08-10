@@ -15,12 +15,12 @@ router = APIRouter()
 def chat(
     request: ChatRequest,
     db: Session = Depends(get_db)
-):
+    ):
     answer = ask_llm(
-        db=db,
-        question=request.question
-    )
-
+    db=db,
+    question=request.question,
+    thread_id=request.thread_id
+)
     return ChatResponse(
         question=request.question,
         answer=answer,
