@@ -1,53 +1,36 @@
-
-
-
 from langgraph.graph import StateGraph, START, END
+from langgraph.prebuilt import ToolNode, tools_condition
 
 from app.agents.state import AgentState
 from app.agents.tools import search_documents
 from app.llm.ollama_client import llm
 
 
-def retrieve_context(state: AgentState):
-    context = search_documents(state["question"])
+tools = [search_documents]
+
+llm_with_tools = llm.bind_tools(tools)
+
+
+def agent(state: AgentState):
+    response = llm_with_tools.invoke(state["messages"])
 
     return {
-        "context": context
+        "messages": [response]
     }
 
 
-def generate_answer(state: AgentState):
-    prompt = f"""
-You are a question-answering assistant.
+builder = StateGraph(AgentState)
 
-Use ONLY the information provided in the context below.
+builder.add_node("agent", agent)
+builder.add_node("tools", ToolNode(tools))
 
-If the answer is not present in the context, say:
-"I don't have enough information in the provided context."
+builder.add_edge(START, "agent")
 
-Context:
-{state["context"]}
+builder.add_conditional_edges(
+    "agent",
+    tools_condition,
+)
 
-Question:
-{state["question"]}
+builder.add_edge("tools", "agent")
 
-Answer:
-"""
-
-    response = llm.invoke(prompt)
-
-    return {
-        "answer": response.content
-    }
-
-
-graph_builder = StateGraph(AgentState)
-
-graph_builder.add_node("retrieve", retrieve_context)
-graph_builder.add_node("generate", generate_answer)
-
-graph_builder.add_edge(START, "retrieve")
-graph_builder.add_edge("retrieve", "generate")
-graph_builder.add_edge("generate", END)
-
-agent_graph = graph_builder.compile()
+agent_graph = builder.compile()
