@@ -48,8 +48,8 @@ def ask_llm(db: Session, question: str, thread_id: str):
 
         return answer
 
-    except Exception:
-        logger.exception("Agent/RAG error")
+    except Exception as e:
+        logger.exception(f"Agent/RAG error: {e}")
         raise LLMException()
 
 
