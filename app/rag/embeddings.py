@@ -1,13 +1,10 @@
-import os
-
-from langchain_ollama import OllamaEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from app.core.config import settings
 
 
 def get_embeddings():
-    return OllamaEmbeddings(
-        model="nomic-embed-text",
-        base_url=os.getenv(
-            "OLLAMA_BASE_URL",
-            "http://localhost:11434"
-        ),
+    return GoogleGenerativeAIEmbeddings(
+        model="gemini-embedding-2-preview",
+        task_type="RETRIEVAL_QUERY",
+        google_api_key=settings.GEMINI_API_KEY,
     )
