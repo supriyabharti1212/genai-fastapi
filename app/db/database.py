@@ -25,4 +25,4 @@ class Base(DeclarativeBase):
 
 from app.db.models import ChatHistory
 
-Base.metadata.create_all(bind=engine)    
+# Base.metadata.create_all(bind=engine)    
